@@ -1,0 +1,37 @@
+@startuml
+package com.device_management {
+
+    interface DeviceService {
+        +DeviceDto getDevice(UUID deviceId)
+        +void updateDeviceStatus(UUID deviceId, DeviceStatusDto statusDto)
+        +void sendCommand(UUID deviceId, DeviceCommandDto commandDto)
+    }
+
+    class DeviceServiceImpl {
+        +DeviceDto getDevice(UUID deviceId)
+        +void updateDeviceStatus(UUID deviceId, DeviceStatusDto statusDto)
+        +void sendCommand(UUID deviceId, DeviceCommandDto commandDto)
+    }
+
+    class Device {
+        +UUID deviceId
+        +String name
+        +UUID deviceTypeId
+        +UUID moduleId
+        +double targetValue
+        +double currentValue
+        +boolean isOn
+    }
+
+    class DeviceController {
+        +ResponseEntity<DeviceDto> getDevice(UUID deviceId)
+        +ResponseEntity<Void> updateDeviceStatus(UUID deviceId, DeviceStatusDto statusDto)
+        +ResponseEntity<Void> sendCommand(UUID deviceId, DeviceCommandDto commandDto)
+    }
+
+    DeviceController --> DeviceServiceImpl : uses
+    DeviceServiceImpl ..|> DeviceService : <<implement>>
+    DeviceServiceImpl --> Device
+}
+
+@enduml

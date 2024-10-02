@@ -1,0 +1,34 @@
+@startuml
+title Контекстная диаграмма ToBe Smart-Home
+
+!define RECTANGLE component
+!define PERSON actor
+
+' Определяем внешние системы
+PERSON Пользователь
+PERSON Администратор
+component "Датчики" as Sensors
+
+' Определяем приложение
+rectangle "Управление умным домом" as SmartHomeApp {
+    rectangle "Управление устройствами" as DeviceManagement {
+        component "Управление отоплением" as HeatingControl
+        component "Управление освещением" as LightingControl
+        component "Управление воротами" as GateControl
+        component "Удаленное наблюдение" as RemoteMonitoring
+        component "Неуточненное поведение" as FutureBehavior
+    }
+    rectangle "Телеметрия" as Telemetry {
+        component "Сбор данных" as DataCollection
+    }
+    rectangle "UI слой" as UI
+}
+
+' Определяем связи
+Пользователь --> UI : Использует
+Администратор --> UI : Использует
+Sensors --> Telemetry : Передает данные
+UI --> DeviceManagement : Связывает управление
+DeviceManagement --> Telemetry : Использует данные
+
+@enduml

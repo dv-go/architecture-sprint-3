@@ -1,0 +1,29 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: telemetry-service
+    url: http://telemetry:8082
+    routes:
+      - name: telemetry-route
+        paths:
+          - /telemetry
+        strip_path: true
+
+      - name: telemetry-swagger-config
+        paths:
+          - /telemetry/v3/api-docs/swagger-config
+        strip_path: false
+
+  - name: device-management-service
+    url: http://device-management:8081
+    routes:
+      - name: device-management-route
+        paths:
+          - /device-management
+        strip_path: true
+
+      - name: device-management-swagger-config
+        paths:
+          - /device-management/v3/api-docs/swagger-config
+        strip_path: false

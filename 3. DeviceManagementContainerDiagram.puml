@@ -1,0 +1,34 @@
+@startuml
+title Диаграмма контейнеров приложения Smart-Home
+
+!define RECTANGLE component
+!define DATABASE database
+
+' Определяем контейнеры
+rectangle "Веб-приложение (UI)\n(HTML, CSS, JavaScript)" as WebApp {
+    component "Интерфейс пользователя" as UserInterface
+}
+
+rectangle "Сервер приложений (Java)\n(REST API)" as AppServer {
+    component "API Gateway (Kong)" as APIGateway
+    component "Управление устройствами" as DeviceManagement
+    component "Телеметрия" as Telemetry
+}
+
+DATABASE "База данных для управления устройствами (PostgreSQL)\n(TCP)" as DeviceDatabase {
+    component "Данные устройств" as DeviceData
+}
+
+DATABASE "База данных телеметрии (PostgreSQL)\n(TCP)" as TelemetryDatabase {
+    component "История телеметрических данных" as HistoricalData
+}
+
+' Определяем взаимодействия
+UserInterface --> APIGateway : Запросы от пользователя (REST)
+APIGateway --> DeviceManagement : Запросы на управление устройствами (REST)
+APIGateway --> Telemetry : Запросы на получение телеметрических данных (REST)
+DeviceManagement --> DeviceDatabase : Чтение/запись данных устройств (TCP)
+Telemetry --> TelemetryDatabase : Сохранение исторических данных (TCP)
+DeviceManagement --> Telemetry : Запрос на получение телеметрических данных (REST API)
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+package com.telemetry {
+
+    class Telemetry {
+        +UUID id
+        +UUID deviceId
+        +String dataType
+        +double dataValue
+        +LocalDateTime recordTime
+        +boolean isOn
+    }
+
+    class TelemetryService {
+        +Telemetry getLastTelemetry(UUID deviceId)
+        +List<Telemetry> getTelemetryByDeviceIdAndTimeRange(UUID deviceId, LocalDateTime startTime, LocalDateTime endTime)
+        +Telemetry saveTelemetry(Telemetry telemetry)
+    }
+
+    interface TelemetryRepository {
+        +Telemetry findTopByDeviceIdOrderByRecordTimeDesc(UUID deviceId)
+        +List<Telemetry> findByDeviceIdAndRecordTimeBetween(UUID deviceId, LocalDateTime startTime, LocalDateTime endTime)
+    }
+
+    class TelemetryController {
+        +ResponseEntity<Telemetry> getLatestTelemetry(UUID deviceId)
+        +ResponseEntity<List<Telemetry>> getTelemetryByTimeRange(UUID deviceId, LocalDateTime startTime, LocalDateTime endTime)
+        +ResponseEntity<Telemetry> createTelemetry(UUID deviceId, Telemetry telemetry)
+    }
+
+    TelemetryController --> TelemetryService
+    TelemetryService --> Telemetry
+    TelemetryService ..|> TelemetryRepository : <<implement>>
+}
+
+@enduml

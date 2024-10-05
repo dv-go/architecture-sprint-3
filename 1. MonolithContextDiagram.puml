@@ -1,0 +1,26 @@
+@startuml
+title Контекстная диаграмма AsIs Smart-Home Monolith
+
+!define RECTANGLE component
+!define PERSON actor
+
+' Определяем внешние системы
+PERSON Пользователь
+PERSON Администратор
+component "Датчики температуры" as Sensors
+
+' Определяем приложение
+RECTANGLE "Управление умным домом" as SmartHomeApp {
+    component "Управление устройствами" as DeviceManagement {
+        component "Контроллер температуры" as TemperatureController
+    }
+    component "UI слой" as UI
+}
+
+' Определяем связи
+Пользователь --> UI : Использует
+Администратор --> UI : Использует
+Sensors --> TemperatureController : Передает данные о температуре
+TemperatureController --> UI : Отправляет обновления температуры
+
+@enduml
